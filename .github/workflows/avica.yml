@@ -1,0 +1,23 @@
+name: Windows - Avica RDP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 9999
+    
+    steps:
+      - name: Downloading and Installing Avica
+        run: |
+          Invoke-WebRequest -Uri "https://www.avica.com/downloads/Avica_Installer.exe" -OutFile "avica_installer.exe"
+          ./avica_installer.exe /S /v"/qn"
+
+      - name: Starting Avica and Getting Credentials
+        run: |
+          Start-Process "C:\Program Files\Avica\Avica.exe"
+          Start-Sleep -s 15
+          
+      - name: Keeping the session alive
+        run: python time.py
